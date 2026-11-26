@@ -1,27 +1,46 @@
-# A.R.I.A. Android Starter (v0.1.0)
+# ARIA Android v0.3.0
 
-This is a starter Android Studio project for the first A.R.I.A. prototype.
+A runnable Android starter for ARIA: futuristic animated holographic-style core, Gemini chat, Bangla/English input, speech recognition, text-to-speech, and locally persisted chat history.
 
-## Included
-- Bengali-first screen and speech output using Android TextToSpeech.
-- Push-to-talk speech recognition using Android's speech recognizer.
-- Basic sample language-switch phrase handling.
-- Explicit microphone permission request.
-- No camera, contacts, messages, photos, or file access.
-
-## Important limitations
-- This is a prototype source project, not an installed APK.
-- It does **not** implement an always-on "ARIA" wake word.
-- It does **not** control other apps or send messages/calls.
-- Speech recognition availability and Bengali voice quality depend on the device's installed speech services and voice data.
-- Sensitive actions must be added one at a time with explicit confirmation screens.
-- Android background microphone access is restricted; do not assume continuous listening will work while locked.
+## Requirements
+- Android Studio with JDK 17
+- Android SDK Platform 35
+- A Gemini API key from Google AI Studio
 
 ## Build
-1. Install Android Studio on Windows.
-2. Open this folder as an existing project.
-3. Allow Gradle sync and install the Android SDK Platform 36 if prompted.
-4. Connect the Android phone with USB debugging enabled, or use an emulator.
-5. Run the `app` configuration.
+Open this folder in Android Studio and sync Gradle, or run:
+```bash
+gradle wrapper --gradle-version 8.11.1
+./gradlew assembleDebug
+```
+APK output: `app/build/outputs/apk/debug/app-debug.apk`.
 
-If Android Studio reports a plugin/Gradle compatibility issue, update the Android Gradle Plugin and Gradle wrapper together using Android Studio's suggested compatible versions.
+GitHub Actions builds a debug APK on pushes to `main` or manual workflow dispatch.
+
+## First launch
+1. Install the APK.
+2. Tap the gear icon and save your Gemini API key.
+3. Send a message or tap the microphone.
+4. Grant microphone permission when prompted.
+
+## Included
+- Gemini 2.5 Flash REST integration (user-supplied API key).
+- Bengali (Bangladesh) / English prompt behavior.
+- Android speech recognition and Android system TTS (voice availability depends on installed speech services).
+- Chat history stored in app-private SharedPreferences.
+- Animated Canvas-rendered holographic orb and status states.
+- GitHub Actions build workflow.
+
+## Important limitations
+- This is an Android MVP, not the finished all-platform JARVIS system.
+- Google speech recognition and TTS depend on the Android device's installed language/voice services.
+- Gemini usage limits and billing/quota are controlled by Google; no app can remove provider limits.
+- API key is stored in private app storage, not a hardware-backed secret vault. Do not share the key or publish screenshots containing it.
+- Windows control, wake-word always-on listening, cross-device sync, Gmail/Calendar/Drive integrations, and full 3D rendering are not implemented in this release. Windows companion requirements are documented in `windows-companion/README.md`.
+- No action is silently executed by AI; device actions require separate, explicit implementation and permissions.
+
+## Troubleshooting
+- `API key not valid`: check key and enabled Gemini API access.
+- `Quota exceeded`: check Google AI Studio / Cloud quota; wait or configure billing/another supported provider.
+- No Bangla voice: install/update a Bangla speech recognition/TTS voice in Android settings.
+- Build failure: open the full GitHub Actions log; ensure JDK 17 and SDK Platform 35 are installed.
