@@ -1,46 +1,46 @@
-# ARIA Android v0.3.0
+# ARIA Android v0.5.0 — Auto Brain + Wake Word
 
-A runnable Android starter for ARIA: futuristic animated holographic-style core, Gemini chat, Bangla/English input, speech recognition, text-to-speech, and locally persisted chat history.
+A practical Android personal-assistant starter preserving the dark cyan holographic interface and adding a two-provider AI fallback, Google Search grounding, voice input/output, local chat memory and an opt-in foreground wake listener.
 
 ## Requirements
-- Android Studio with JDK 17
-- Android SDK Platform 35
-- A Gemini API key from Google AI Studio
+- Android Studio, JDK 17, Android SDK 35
+- Gemini API key from Google AI Studio
+- Optional OpenAI API key for backup brain
 
 ## Build
-Open this folder in Android Studio and sync Gradle, or run:
-```bash
-gradle wrapper --gradle-version 8.11.1
-./gradlew assembleDebug
-```
-APK output: `app/build/outputs/apk/debug/app-debug.apk`.
+Open the project folder in Android Studio and sync Gradle. Or run `gradle assembleDebug` with Gradle 8.11.1 and SDK Platform 35 installed. GitHub Actions builds the debug APK on push to `main` or manual workflow dispatch.
 
-GitHub Actions builds a debug APK on pushes to `main` or manual workflow dispatch.
+## Setup
+1. Install the APK and open ARIA.
+2. Open Settings and add Gemini API key. Optionally add an OpenAI API key.
+3. AUTO tries Gemini 3.8 Flash first, then OpenAI `gpt-4.1-mini` if Gemini fails.
+4. Enable “Always listen for ARIA” and grant microphone permission. Android may also ask for notification permission.
+5. A persistent notification shows that the microphone wake listener is active. Tap Stop listening in that notification to turn it off.
 
-## First launch
-1. Install the APK.
-2. Tap the gear icon and save your Gemini API key.
-3. Send a message or tap the microphone.
-4. Grant microphone permission when prompted.
-
-## Included
-- Gemini 2.5 Flash REST integration (user-supplied API key).
+## Included in this release
+- Futuristic animated cyan holographic orb (Canvas; not a 3D model).
+- Gemini Interactions API with Google Search tool.
+- OpenAI Responses API as a fallback provider.
 - Bengali (Bangladesh) / English prompt behavior.
-- Android speech recognition and Android system TTS (voice availability depends on installed speech services).
-- Chat history stored in app-private SharedPreferences.
-- Animated Canvas-rendered holographic orb and status states.
-- GitHub Actions build workflow.
+- Android speech recognition and Android system TextToSpeech (voice availability depends on installed speech services).
+- Local app-private chat history (last 30 messages).
+- User-enabled foreground wake listener for “ARIA”, “আরিয়া”, “আড়িয়া”, or “Wake up”.
+- Small explicit browser shortcuts for YouTube, Google, Gmail and Maps.
 
-## Important limitations
-- This is an Android MVP, not the finished all-platform JARVIS system.
-- Google speech recognition and TTS depend on the Android device's installed language/voice services.
-- Gemini usage limits and billing/quota are controlled by Google; no app can remove provider limits.
-- API key is stored in private app storage, not a hardware-backed secret vault. Do not share the key or publish screenshots containing it.
-- Windows control, wake-word always-on listening, cross-device sync, Gmail/Calendar/Drive integrations, and full 3D rendering are not implemented in this release. Windows companion requirements are documented in `windows-companion/README.md`.
-- No action is silently executed by AI; device actions require separate, explicit implementation and permissions.
+## Important limitations and privacy
+- This is an Android MVP, not a full ChatGPT Premium clone or an unrestricted JARVIS. Provider API keys, quotas, billing and model availability are controlled by their providers. OpenAI API billing is separate from ChatGPT subscriptions.
+- AUTO means Gemini primary and OpenAI fallback; both API keys must be supplied for failover. If Gemini works, OpenAI is not called.
+- The wake listener uses the phone's installed SpeechRecognizer provider, not a dedicated low-power on-device wake-word engine. It may stop/restart, may need network/provider support despite offline preference, and battery/OEM restrictions can affect reliability. After detecting the phrase, ARIA posts a notification; tap it to start the conversation. It does not silently open the app over other apps.
+- Android 14+ microphone foreground services are subject to while-in-use permission and background-start restrictions. Start wake listening from the visible app after granting microphone permission. The persistent notification is intentional and required for transparency.
+- The Android speech provider may capture audio and process it according to that provider's privacy policy. Wake listening is off until the user enables it; stop it from the persistent notification or app Settings.
+- API keys are stored in app-private SharedPreferences in this prototype. This is not a production-grade secret vault. For public distribution, move provider keys to a secure backend and never commit keys to GitHub.
+- Google Search grounding is enabled for Gemini requests. OpenAI fallback does not have web search enabled in this starter.
+- No unrestricted phone control, background screen reading, auto-send messages, Gmail/Calendar account access, cloud sync, or Windows control is implemented. Sensitive device actions must be implemented separately with Android APIs, user permissions and confirmations.
+- Windows companion is a future separate application; its folder contains planning notes only.
 
 ## Troubleshooting
-- `API key not valid`: check key and enabled Gemini API access.
-- `Quota exceeded`: check Google AI Studio / Cloud quota; wait or configure billing/another supported provider.
-- No Bangla voice: install/update a Bangla speech recognition/TTS voice in Android settings.
-- Build failure: open the full GitHub Actions log; ensure JDK 17 and SDK Platform 35 are installed.
+- `API key not valid`: verify the key and provider API access.
+- `Quota exceeded`: check provider usage/quota; there is no unlimited mode.
+- Wake word does not trigger: check microphone and notification permissions, keep the persistent notification enabled, update Google speech services, and disable battery restriction for testing if the phone manufacturer allows it.
+- No Bangla voice: install a Bangla speech recognition/TTS voice in Android settings.
+- Build failure: use JDK 17, Gradle 8.11.1 and Android SDK 35; inspect the full GitHub Actions log.

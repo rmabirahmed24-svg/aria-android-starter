@@ -1,12 +1,12 @@
-# ARIA Windows Companion — planned companion module
+# ARIA Windows Companion — planned, not implemented
 
-This folder reserves the Windows companion integration. The Android app in this release does not yet control Windows PCs.
+The Android app in v0.5.0 does not remotely control Windows. This folder is a design note for a future companion service.
 
-Planned secure implementation:
-- Explicit pairing using a one-time code and a long random token.
-- TLS or an authenticated private tunnel; no unauthenticated LAN control.
-- Allowlisted actions only (launch approved apps, status checks).
-- Wake-on-LAN requires the PC BIOS/network adapter to support it and the correct MAC address.
-- Every privileged or destructive action requires confirmation.
+Planned safe architecture:
+- Windows 10/11 tray application paired with Android over authenticated local network or a secure relay.
+- Explicit device pairing, revocable tokens and per-action permissions.
+- Allowlisted actions only (launch an app, show status, open a selected file); confirmation before destructive, financial, messaging or privacy-sensitive actions.
+- No hidden screen capture, keylogging, credential extraction, arbitrary shell execution or silent file access.
+- Separate Windows installer, signed builds, audit log and user-visible connection state.
 
-Do not expose a control server directly to the public internet. This module is documentation only in v0.3.0.
+A Windows companion executable is not included in this Android source archive.
